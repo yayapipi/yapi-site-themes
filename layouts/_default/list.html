@@ -1,0 +1,159 @@
+{{- define "main" }}
+
+{{- if (and .Site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }} {{/* if not profileMode */}}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header">
+  <link rel="stylesheet" href="../css/normalize.css">
+  <link rel="stylesheet" href="../css/layout.css">
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.mixitup.min.js"></script>
+  
+  <script type="text/javascript">
+  $(function () {
+    
+    var filterList = {
+    
+      init: function () {
+      
+        // MixItUp plugin
+        // http://mixitup.io
+        $('#portfoliolist').mixItUp({
+          selectors: {
+            target: '.portfolio',
+            filter: '.filter' 
+          },
+          load: {
+            {{- if eq .Title "Projects"}}
+              filter: '.game'  
+            {{- end}}
+
+            {{- if eq .Title "Posts"}}
+              filter: '.tech'  
+            {{- end}}
+          }     
+        });               
+      
+      }
+
+    };
+    
+    // Run the show!
+    filterList.init();
+    
+    
+  }); 
+  </script>
+
+{{- if eq .Title "Projects"}}
+  <h1> 作品 </h1>
+{{- end}}
+
+{{- if eq .Title "Posts"}}
+  <h1> 日志 </h1>
+{{- end}}
+
+
+</header>
+{{- end }}
+
+
+
+<div class="container">
+
+{{- if eq .Title "Projects"}}
+  <ul id="filters" class="clearfix">
+        <li><span class="filter active" data-filter=".game, .app, .web, .story, .art, .unknown">全部</span></li>
+        <li><span class="filter" data-filter=".game">游戲</span></li>
+        <li><span class="filter" data-filter=".app">程式</span></li>
+        <li><span class="filter" data-filter=".web">網頁</span></li>
+        <li><span class="filter" data-filter=".story">故事</span></li>
+        <li><span class="filter" data-filter=".art">畫作</span></li>
+        <li><span class="filter" data-filter=".unknown">不明</span></li> 
+  </ul>
+{{- end}}
+
+
+{{- if eq .Title "Posts"}}
+  <ul id="filters" class="clearfix">
+        <li><span class="filter active" data-filter=".tech, .develop, .share, .review">全部</span></li>
+        <li><span class="filter" data-filter=".tech">技術文章</span></li>
+        <li><span class="filter" data-filter=".develop">開發日志</span></li>
+        <li><span class="filter" data-filter=".share">軟件分享</span></li>
+        <li><span class="filter" data-filter=".review">評測</span></li>
+  </ul>
+{{- end}}
+
+
+  <div class = "grid_layout" id="portfoliolist">
+
+  {{- $pages := union .RegularPages .Sections }}
+
+  {{- if .IsHome }}
+  {{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+  {{- end}}
+
+  {{ $paginator := .Paginate $pages }}
+  {{ $term := .Data.Term}}
+  {{- range $index, $page := $paginator.Pages }}
+
+  {{- $class := "post-entry" }}
+  {{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0)) }}
+  {{- if .Site.Params.homeInfoParams | or .Site.Params.disableSpecial1stPost}}
+  {{- partial "home_info.html" . }}
+  {{- else}}
+  {{- $class = "first-entry" }}
+  {{- end }}
+  {{- else if $term }}
+  {{- $class = "post-entry tag-entry" }}
+  {{- end }}
+
+  <article class="{{ $class }} grid-post portfolio {{ with .Params }}{{ .valuetype }}{{ end }}"  data-cat="{{ with .Params }}{{ .valuetype }}{{ end }}">
+    {{- partial "cover.html" (dict "cxt" . "IsHome" true) }}
+    <header class="entry-header">
+      <h2 style="text-align: center; font-size: 20px;">
+        {{ .Title }}
+        {{- if .Draft }}<div class="entry-isdraft"><sup>&nbsp;&nbsp;[draft]</sup></div>{{- end }}
+      </h2>
+    </header>
+    {{- if (ne .Site.Params.hideSummary true)}}
+    <section class="entry-content">
+      {{- if(eq .Params.meta.show_summary true)}}
+        {{.Params.meta.summary}}
+        <p>{{ .Summary | plainify | htmlUnescape }}...</p>
+      {{- end}}
+    </section>
+    {{- end }}
+    <footer class="entry-footer">
+    {{- if(eq .Params.meta.show_meta true)}}
+        {{- partial "post_meta.html" . -}}
+    {{- end}}
+
+    </footer>
+    
+
+    <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+  </article>
+  {{- end }}
+
+  </div>
+
+</div>
+
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+  <nav class="pagination">
+    {{- if $paginator.HasPrev }}
+    <a class="prev" href="{{ $paginator.Prev.URL }}">« {{ i18n "prev_page" }}</a>
+    {{- end }}
+    {{- if $paginator.HasNext }}
+    <a class="next" href="{{ $paginator.Next.URL }}">{{ i18n "next_page" }} »</a>
+    {{- end }}
+  </nav>
+</footer>
+{{- end }}
+{{end}}{{/* end profileMode */}}
+{{- end  }}{{- /* end main */ -}}
