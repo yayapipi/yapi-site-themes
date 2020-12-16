@@ -1,0 +1,33 @@
+{{- define "main" }}
+
+<article class="post-single">
+  
+  <!--Introduction Card-->
+  <div >
+  	<img src="/profile.jpg" alt="Profile" style="width:200px;border-radius:65px;display: inline;">
+	<p style='display:inline; margin-left: 40px;'>姓名：Yayapipi</p>
+	</div>
+  <!--Content-->
+  <div class="post-content">
+    {{- partial "anchored_headings.html" .Content -}}
+  </div>
+  <footer class="post-footer">
+    {{- if .Params.tags }}
+    <ul class="post-tags">
+      {{- range .Params.tags }}
+      {{- $href := print (absLangURL "tags/") (urlize .) }}
+      <li><a href="{{ $href }}">{{ . }}</a></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+    {{- if (and .Site.Params.ShowShareButtons (ne .Params.disableShare true) ) }}
+    {{- partial "share_icons.html" . }}
+    {{- end }}
+  </footer>
+
+  {{- if and ($.Site.Params.comments) (ne .Params.comments false) }}
+  {{- partial "comments.html" . }}
+  {{- end }}
+</article>
+
+{{- end  }}{{/* end main */}}
