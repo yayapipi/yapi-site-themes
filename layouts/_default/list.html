@@ -22,6 +22,10 @@
         // MixItUp plugin
         // http://mixitup.io
         $('#portfoliolist').mixItUp({
+          animation: {
+            "duration": 600,
+            "effects": "fade translateX(20%) translateY(20%) translateZ(-8px) rotateX(90deg) rotateY(90deg) rotateZ(180deg) "
+          },
           selectors: {
             target: '.portfolio',
             filter: '.filter' 
@@ -58,7 +62,7 @@
 {{- end}}
 
 {{- if eq .Title "Posts"}}
-  <h1> 日志 </h1>
+  <h1> 文章 </h1>
 {{- end}}
 
 {{- if eq .Title "Products"}}
@@ -87,7 +91,7 @@
 
 {{- if eq .Title "Posts"}}
   <ul id="filters" class="clearfix">
-        <li><span class="filter active" data-filter=".tech, .develop, .share, .review .story">全部</span></li>
+        <li><span class="filter active" data-filter=".story, .tech, .develop, .share, .review">全部</span></li>
         <li><span class="filter" data-filter=".tech">技術文章</span></li>
         <li><span class="filter" data-filter=".develop">開發日志</span></li>
         <li><span class="filter" data-filter=".share">軟件分享</span></li>
