@@ -87,10 +87,11 @@
 
 {{- if eq .Title "Posts"}}
   <ul id="filters" class="clearfix">
-        <li><span class="filter active" data-filter=".tech, .develop, .share, .review">全部</span></li>
+        <li><span class="filter active" data-filter=".tech, .develop, .share, .review .story">全部</span></li>
         <li><span class="filter" data-filter=".tech">技術文章</span></li>
         <li><span class="filter" data-filter=".develop">開發日志</span></li>
         <li><span class="filter" data-filter=".share">軟件分享</span></li>
+        <li><span class="filter" data-filter=".story">故事</span></li>
         <li><span class="filter" data-filter=".review">評測</span></li>
   </ul>
 {{- end}}
@@ -101,7 +102,6 @@
         <li><span class="filter" data-filter=".game">游戲</span></li>
         <li><span class="filter" data-filter=".app">程式</span></li>
         <li><span class="filter" data-filter=".web">網頁</span></li>
-        <li><span class="filter" data-filter=".story">故事</span></li>
         <li><span class="filter" data-filter=".art">畫作</span></li>
         <li><span class="filter" data-filter=".unknown">不明</span></li> 
   </ul>
